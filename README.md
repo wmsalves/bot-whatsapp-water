@@ -15,11 +15,6 @@ This is a WhatsApp bot that responds with water data. It listens to messages in 
 - **Vercel**: Deployment platform for hosting the application.
 - **WhatsApp API**: To interact with WhatsApp messages in a group.
 
-## Features
-- Responds to commands in WhatsApp groups.
-- Stores and retrieves water-related data using Firebase.
-- Deployed on Vercel for easy access.
-
 ## How to Set Up Locally
 
 1. Clone the repository:
@@ -71,6 +66,33 @@ Make sure to set up Firebase correctly with your project and credentials in the 
 1. The bot listens for commands in a WhatsApp group.
 2. When a user types `!agua <number>`, the bot fetches information about water consumption and sends a response.
 3. Firebase is used to store any necessary data, and the bot responds based on predefined logic.
+
+## Bot Commands
+
+### `!agua <value>`
+The `!agua <value>` command allows users to record their water intake. The bot will store the value in Firebase for later retrieval and tracking.
+
+**Usage:**
+- Command: `!agua 500`
+- Function: Records 500ml of water for the user.
+
+---
+
+### `!delete`
+The `!delete` command allows users to remove their last registered water intake from the system. This is useful for correcting any mistakes or clearing previous data.
+
+**Usage:**
+- Command: `!delete`
+- Function: Deletes the last water intake recorded for the user.
+
+---
+
+### `!ranking`
+The `!ranking` command provides a ranking of all participants in the water tracking system. It displays a list of users sorted by the amount of water they have recorded, allowing the bot to encourage healthy competition and regular tracking of water intake.
+
+**Usage:**
+- Command: `!ranking`
+- Function: Displays a list of users and their total water intake, ranked from highest to lowest.
 
 ## Contributing
 
