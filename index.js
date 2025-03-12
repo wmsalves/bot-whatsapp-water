@@ -109,6 +109,16 @@ async function startBot() {
 
             sock.sendMessage(sender, { text: `💧 Adicionado ${amount}ml!\n🥤 Total: ${userData.total + amount}ml` });
         }
+        // Comando !diminuir <quantidade>
+        else if (text.startsWith("!diminuir")) {
+            const amount = parseInt(text.split(" ")[1]);
+            if (isNaN(amount)) return sock.sendMessage(sender, { text: "⚠️ Use: !diminuir 500" });
+            const userRef = db.collection("agua").doc(user);
+            const userData = (await userRef.get()).data() || { total: 0 };
+            await userRef.set({ total: userData.total + amount });
+
+            sock.sendMessage(sender, { text: `💧 Removido ${amount}ml!\n🥤 Total: ${userData.total - amount}ml` });
+        }
         // Comando !consumo
         else if (text === "!consumo") {
             const userRef = db.collection("agua").doc(user);
