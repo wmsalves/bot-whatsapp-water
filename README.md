@@ -1,68 +1,81 @@
-# WhatsApp Bot for Water Management
+# WhatsApp Water Bot
 
-This project is a **WhatsApp bot** designed for water consumption management. Users can interact with the bot by sending commands such as `!agua 500` to log 500 liters of water consumption or other configured features.
+This is a WhatsApp bot that responds with water data. It listens to messages in WhatsApp groups and processes specific commands like `!agua <value>` to send water-related information.
 
 ## Features
 
-- **Automatic response** to text commands sent through WhatsApp.
-- **Deployed on Vercel** for scalable and free hosting.
-- **Configurable commands** to interact with the bot, such as `!agua 500`.
+- Responds to commands in WhatsApp groups.
+- Stores and retrieves water-related data using Firebase.
+- Deployed on Vercel for easy access.
 
 ## Technologies Used
 
-- **Node.js**: JavaScript runtime environment for the server-side.
-- **Express**: Framework for handling HTTP routes and API endpoints.
-- **Vercel**: Hosting platform for deploying the application.
-- **dotenv**: To manage environment variables like API keys and credentials.
-- **git**: Version control system for source code management.
+- **Node.js**: Runtime environment for JavaScript.
+- **Firebase**: Cloud platform for storing and retrieving data.
+- **Vercel**: Deployment platform for hosting the application.
+- **WhatsApp API**: To interact with WhatsApp messages in a group.
 
-## Running Locally
+## Features
+- Responds to commands in WhatsApp groups.
+- Stores and retrieves water-related data using Firebase.
+- Deployed on Vercel for easy access.
 
-### Prerequisites
+## How to Set Up Locally
 
-- Node.js (v14 or later)
-- A code editor (recommended: [VS Code](https://code.visualstudio.com/))
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/wmsalves/bot-whatsapp-agua.git
+    ```
 
-### Steps
-
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/your-username/bot-whatsapp-water.git
-   ```
 2. Navigate to the project directory:
-   ```bash
-   cd bot-whatsapp-water
-   ```
-3. Install the dependecies:
-   ```bash
-   Install the dependencies:
-   ```
-4. Create a .env file at the root of the project and add your environment variables (for Vercel):
-   ```bash
-   # .env
-   VERCEL_URL=https://your-vercel-deployment-url
-   ```
-5. Start the server locally:
-   ```bash
-   npm start
-   ```
-The server should run locally, usually on port 3000. You can test the application via the API endpoint.
+    ```bash
+    cd bot-whatsapp-agua
+    ```
 
-6. Use ngrok (or any other tool) to generate a public URL and configure the webhook in your Twilio account, if needed.
- Example:
-   ```bash
-   ngrok http 3000
-   ```
+3. Install the necessary dependencies:
+    ```bash
+    npm install
+    ```
+
+4. Create a `.env` file in the root of the project and set your environment variables for Firebase credentials.
+
+   Example `.env` file:
+    ```plaintext
+    FIREBASE_PROJECT_ID=your-project-id
+    FIREBASE_PRIVATE_KEY_ID=your-private-key-id
+    FIREBASE_PRIVATE_KEY="your-private-key"
+    FIREBASE_CLIENT_EMAIL=your-client-email
+    FIREBASE_CLIENT_X509_CERT_URL=your-cert-url
+    WA_AUTH_STATE_FILE=auth
+    ALLOWED_GROUP_ID=your-group-id
+    ADMIN_USERS=your-admin-users
+    ```
+
+5. Run the bot locally:
+    ```bash
+    node index.js
+    ```
+
 ## Deploying on Vercel
 
-  1. Log in to Vercel:
-  ```bash
-  vercel login
-  ```
-  2. To deploy the application, run:
-  ```bash
-  vercel
-  ```
-  Vercel will ask you a few questions about the project, and you can accept the default settings.
-  
-  3. After deployment, Vercel will provide a public URL for your app. You can use this URL to configure your WhatsApp bot and webhook.
+1. Push the project to GitHub and make sure the repository is public or private with proper access.
+2. Connect your GitHub repository to [Vercel](https://vercel.com).
+3. Vercel will automatically detect your project and deploy it. Follow the setup instructions on Vercel's website.
+
+## Firebase Configuration
+
+Make sure to set up Firebase correctly with your project and credentials in the `.env` file. You can follow the official [Firebase Admin SDK documentation](https://firebase.google.com/docs/admin/setup) for more details.
+
+## How the Bot Works
+
+1. The bot listens for commands in a WhatsApp group.
+2. When a user types `!agua <number>`, the bot fetches information about water consumption and sends a response.
+3. Firebase is used to store any necessary data, and the bot responds based on predefined logic.
+
+## Contributing
+
+Feel free to fork the repository, make changes, and submit a pull request!
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
