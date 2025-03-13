@@ -103,69 +103,66 @@ async function startBot() {
         if (text.startsWith("!agua")) {
             const amount = parseInt(text.split(" ")[1]);
             if (isNaN(amount)) return sock.sendMessage(sender, { text: "⚠️ Use: !agua 500" });
-            const userRef = db.collection("agua").doc(user);
-            const userData = (await userRef.get()).data() || { total: 0 };
-            await userRef.set({ total: userData.total + amount });
-
-            sock.sendMessage(sender, { text: `💧 Adicionado ${amount}ml!\n🥤 Total: ${userData.total + amount}ml` });
+            
+            const dailyRef = db.collection("agua_diario").doc(user);
+            const weeklyRef = db.collection("agua_semanal").doc(user);
+            const dailyData = (await dailyRef.get()).data() || { total: 0 };
+            const weeklyData = (await weeklyRef.get()).data() || { total: 0 };
+            
+            await dailyRef.set({ total: dailyData.total + amount });
+            await weeklyRef.set({ total: weeklyData.total + amount });
+            
+            sock.sendMessage(sender, { text: `💧 Adicionado ${amount}ml!\n🥤 Total diário: ${dailyData.total + amount}ml` });
         }
         // Comando !diminuir <quantidade>
         else if (text.startsWith("!diminuir")) {
             const amount = parseInt(text.split(" ")[1]);
             if (isNaN(amount)) return sock.sendMessage(sender, { text: "⚠️ Use: !diminuir 500" });
-            const userRef = db.collection("agua").doc(user);
-            const userData = (await userRef.get()).data() || { total: 0 };
-            await userRef.set({ total: userData.total + amount });
-
-            sock.sendMessage(sender, { text: `💧 Removido ${amount}ml!\n🥤 Total: ${userData.total - amount}ml` });
+            
+            const dailyRef = db.collection("agua_diario").doc(user);
+            const weeklyRef = db.collection("agua_semanal").doc(user);
+            const dailyData = (await dailyRef.get()).data() || { total: 0 };
+            const weeklyData = (await weeklyRef.get()).data() || { total: 0 };
+            
+            await dailyRef.set({ total: Math.max(dailyData.total - amount, 0) });
+            await weeklyRef.set({ total: Math.max(weeklyData.total - amount, 0) });
+            
+            sock.sendMessage(sender, { text: `💧 Removido ${amount}ml!\n🥤 Total diário: ${Math.max(dailyData.total - amount, 0)}ml` });
         }
         // Comando !consumo
         else if (text === "!consumo") {
-            const userRef = db.collection("agua").doc(user);
-            const userData = (await userRef.get()).data();
-            const total = userData ? userData.total : 0;
+            const dailyRef = db.collection("agua_diario").doc(user);
+            const dailyData = (await dailyRef.get()).data();
+            const total = dailyData ? dailyData.total : 0;
             sock.sendMessage(sender, { text: `🚰 Você bebeu ${total}ml hoje!` });
         }
-        // Comando !ranking
-        else if (text === "!ranking") {
-            const users = await db.collection("agua").orderBy("total", "desc").limit(10).get();
-            if (users.empty) {
-                return sock.sendMessage(sender, { text: "📊 Nenhum consumo registrado ainda!" });
-            }
-        
-            let ranking = "🏆 Ranking de Consumo:\n";
-            users.forEach((doc, index) => {
-                const userData = doc.data();
-                const total = userData ? userData.total : 0;
-        
-                if (isNaN(total)) {
-                    console.log(`Erro no total do usuário ${doc.id}: ${total}`);
-                    return;
-                }
-        
-                ranking += `${index + 1}. ${doc.id} - ${total}ml\n`;
-            });
+        // Comando !rakingdiario
+        else if (text === "!rankingdiario") {
+            const users = await db.collection("agua_diario").orderBy("total", "desc").limit(10).get();
+            let ranking = "🏆 Ranking Diário:\n";
+            users.forEach((doc, index) => ranking += `${index + 1}. ${doc.id} - ${doc.data().total}ml\n`);
             sock.sendMessage(sender, { text: ranking });
         }
-        else if (text === "!deletar") {
-            const adminUsers = process.env.ADMIN_USERS?.split(","); // Lista de admins através de variável de ambiente
-            if (!adminUsers.includes(user)) {
-                return sock.sendMessage(sender, { text: "⚠️ Você não tem permissão para executar este comando!" });
-            }
-        
-            // Limpa os dados de todos os usuários na coleção "agua"
-            const usersRef = db.collection("agua");
-            const snapshot = await usersRef.get();
-        
-            if (snapshot.empty) {
-                return sock.sendMessage(sender, { text: "📊 Nenhum dado encontrado para limpar!" });
-            }
-        
-            snapshot.forEach(async (doc) => {
-                await usersRef.doc(doc.id).set({ total: 0 }, { merge: true });
+        // Comando !rankingsemanal
+        else if (text === "!rankingsemanal") {
+            const users = await db.collection("agua_semanal").orderBy("total", "desc").limit(10).get();
+            let ranking = "🏆 Ranking Semanal:\n";
+            users.forEach((doc, index) => ranking += `${index + 1}. ${doc.id} - ${doc.data().total}ml\n`);
+            sock.sendMessage(sender, { text: ranking });
+        }
+        // Comando !limpardiaria
+        else if (text === "!limpardiario") {
+            await db.collection("agua_diario").get().then(snapshot => {
+                snapshot.forEach(doc => doc.ref.delete());
             });
-        
-            sock.sendMessage(sender, { text: "✅ Todos os dados de consumo foram limpos!" });
+            sock.sendMessage(sender, { text: "✅ Todos os dados diários foram apagados!" });
+        }
+        // Comando !limparsemanal
+        else if (text === "!limparsemanal") {
+            await db.collection("agua_semanal").get().then(snapshot => {
+                snapshot.forEach(doc => doc.ref.delete());
+            });
+            sock.sendMessage(sender, { text: "✅ Todos os dados semanais foram apagados!" });
         }
     });
 }
