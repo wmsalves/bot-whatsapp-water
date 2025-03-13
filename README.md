@@ -78,21 +78,58 @@ The `!agua <value>` command allows users to record their water intake. The bot w
 
 ---
 
-### `!delete`
-The `!delete` command allows users to remove their last registered water intake from the system. This is useful for correcting any mistakes or clearing previous data.
+### `!consumo`
+The `!consumo` command allows users to check their total water intake for the current day. It retrieves the user's daily water intake data and displays the total amount of water consumed so far.
 
 **Usage:**
-- Command: `!delete`
-- Function: Deletes the last water intake recorded for the user.
+- Command: `!consumo`
+- Function: Displays the total amount of water the user has consumed today, based on the daily water intake data.
 
 ---
 
-### `!ranking`
-The `!ranking` command provides a ranking of all participants in the water tracking system. It displays a list of users sorted by the amount of water they have recorded, allowing the bot to encourage healthy competition and regular tracking of water intake.
+### `!diminuir`
+The `!diminuir` command allows users to decrease their recorded water intake from both the daily and weekly water intake tables. This is useful for correcting mistakes or adjusting the amount of water consumed.
 
 **Usage:**
-- Command: `!ranking`
-- Function: Displays a list of users and their total water intake, ranked from highest to lowest.
+- Command: `!diminuir`
+- Function: Decreases the user's recorded water intake for both the current day and the current week.
+
+---
+
+### `!limpardiario`
+The `!limpardiario` command allows users to clear the daily water intake table, removing all data recorded for the current day. This is useful for correcting any mistakes or clearing the day's data.
+
+**Usage:**
+- Command: `!limpardiario`
+- Function: Clears all water intake data recorded for the current day.
+
+---
+
+### `!limparsemanal`
+The `!limparsemanal` command allows users to clear the weekly water intake table, removing all data recorded for the current week. This is useful for correcting any mistakes or clearing the week's data.
+
+**Usage:**
+- Command: `!limparsemanal`
+- Function: Clears all water intake data recorded for the current week.
+
+---
+
+### `!rankingdiario`
+The `!rankingdiario` command provides a ranking of all participants based on their daily water intake. It displays a list of users sorted by the amount of water they have recorded for the current day, encouraging healthy competition and daily tracking.
+
+**Usage:**
+- Command: `!rankingdiario`
+- Function: Displays a list of users and their total water intake for the current day, ranked from highest to lowest.
+
+---
+
+### `!rankingsemanal`
+The `!rankingsemanal` command provides a ranking of all participants based on their weekly water intake. It displays a list of users sorted by the amount of water they have recorded for the current week, encouraging healthy competition and weekly tracking.
+
+**Usage:**
+- Command: `!rankingsemanal`
+- Function: Displays a list of users and their total water intake for the current week, ranked from highest to lowest.
+
 
 ## Contributing
 
